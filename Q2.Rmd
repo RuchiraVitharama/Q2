@@ -1,0 +1,173 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r}
+plot(cars)
+```
+```{r}
+library(dplyr)
+```
+
+
+
+```{r}
+df=read.table(file = 'sample_twitter_personal_data.tsv', sep = '\t', header = TRUE)
+```
+Q1
+```{r}
+headers=colnames(df)
+headers
+```
+Q2
+```{r}
+headers_sorted=colnames(df[ , order(names(df))])
+headers_sorted
+```
+
+Q3
+```{r}
+user_list <- list()
+user_count=0
+for(i in 1:nrow(df)) 
+{
+  if(df[i,7]>100){
+    user_list[user_count]<-df[i,1]
+    user_count=user_count+1
+    
+  }
+  
+ 
+}
+user_list
+
+```
+Q4
+```{r}
+male_user_list <- list()
+male_user_count=0
+for(i in 1:nrow(df)) 
+{
+  if(df[i,7]>100 && identical(df[i,6],df[3,6])){
+    male_user_list[male_user_count]<-df[i,1]
+    male_user_count=male_user_count+1
+    
+  }
+  
+ 
+}
+male_user_list
+```
+Q5-----Saying is true.On avarage males initialises to follow others than females .
+```{r}
+male_initiations =0
+female_initiationss=0
+male_users=0
+female_users=0
+
+
+for(i in 1:nrow(df)) 
+{
+  if(identical(df[i,6],df[3,6])){
+    male_initiations=male_initiations+df[i,8]
+    male_users=male_users+1
+    
+    
+    
+  }
+  else{
+    female_initiationss=female_initiationss+df[i,8]
+    female_users=female_users+1
+  }
+  
+}
+
+average_male_initialization=male_initiations/male_users
+average_female_initialization=female_initiationss/female_users
+
+male_vs_female<- c(average_male_initialization,average_female_initialization)
+
+barplot(male_vs_female,col="yellow")
+
+```
+
+
+Q6.1
+
+```{r}
+dob_day=df[,3]
+
+dob_day
+
+hist(dob_day,xlim=c(1,31),col="yellow")
+```
+
+Q6.3
+```{r}
+
+age=df[,2]
+hist(age,col="yellow")
+```
+Q6.2
+```{r}
+followers=df[,7]
+hist(followers,col="yellow")
+```
+
+Q6.4
+
+```{r}
+
+male_hearts =0
+female_hearts=0
+male_users=0
+female_users=0
+
+for(i in 1:nrow(df)) 
+{
+  if(identical(df[i,6],df[3,6])){
+    male_hearts=male_hearts+df[i,9]
+    male_users=male_users+1
+    
+    
+  }
+  else{
+    female_hearts=female_hearts+df[i,9]
+    female_users=female_users+1
+  }
+  
+ 
+}
+
+total_hearts_per_male=male_hearts/male_users
+total_hearts_per_female=female_hearts/female_users
+
+hearts_vs_gender<- c(total_hearts_per_male,total_hearts_per_female)
+
+barplot(hearts_vs_gender,col="yellow")
+```
+
+Q6.5---People significantly use mobile more than web for Twitter access.
+
+```{r}
+mob_sent=sum(df$mobile_app_heart)
+mob_recieved=sum(df$mobile_app_heart_received)
+mobile_total=mob_sent+mob_recieved
+
+web_sent=sum(df$web_heart)
+web_recieved=sum(df$web_heart_received)
+web_total=web_sent+web_recieved
+
+mobile_vs_web<- c(mobile_total,web_total)
+
+barplot(mobile_vs_web,col="yellow")
+```
+
+
+```
+
